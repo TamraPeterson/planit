@@ -9,6 +9,9 @@ class ProjectsService {
 
   async getOne(id) {
     const project = await dbContext.Projects.findById(id).populate('creator')
+    if (!project) {
+      throw new BadRequest('doesnt exist')
+    }
     return project
   }
   async create(body) {
@@ -23,7 +26,9 @@ class ProjectsService {
     if (project.creatorId.toString() !== userId) {
       throw new BadRequest('not your project!')
     }
-    await dbContext.Projects.findOneAndRemove({ _id: id })
+    // await dbContext.Projects.findOneAndRemove(id)
+    await project.remove()
+    return project
   }
 }
 export const projectsService = new ProjectsService()
