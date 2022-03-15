@@ -9,19 +9,27 @@ export class ProjectsController extends BaseController {
     this.router
       .use(Auth0Provider.getAuthorizedUserInfo)
       .get('', this.getAll)
-      // .get('/:id', this.getOne)
+      .get('/:id', this.getOne)
       .post('', this.create)
+      .delete('/:id', this.remove)
   }
 
   async getAll(req, res, next) {
     try {
-      const project = await projectsService.getAll({ creatorId: req.userInfo.id })
+      const projects = await projectsService.getAll({ creatorId: req.userInfo.id })
+      return res.send(projects)
+    } catch (error) {
+      next(error)
+    }
+  }
+  async getOne(req, res, next) {
+    try {
+      const project = await projectsService.getOne(req.params.id)
       return res.send(project)
     } catch (error) {
       next(error)
     }
   }
-
 
   async create(req, res, next) {
     try {
@@ -33,5 +41,13 @@ export class ProjectsController extends BaseController {
     }
   }
 
+  async remove(req, res, next) {
+    try {
+      await projectsService.remove(req.params.id, req.userInfo.id)
+      return res.send('deleted')
+    } catch (error) {
+      next(error)
+    }
+  }
 
 }
