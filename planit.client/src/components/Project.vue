@@ -1,6 +1,7 @@
 <template>
   <h5 class="selectable p-3" @click="goTo">{{ project.name }}</h5>
   <h5 class="p-3">{{ new Date(project.createdAt).toLocaleString() }}</h5>
+  <h5><i class="mdi mdi-delete selectable"></i></h5>
 </template>
 
 

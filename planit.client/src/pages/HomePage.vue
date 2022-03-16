@@ -7,6 +7,24 @@
     </div>
 
     <div v-else>
+      <b
+        title="Create Post"
+        class="
+          create-btn
+          btn btn-success
+          text-white
+          rounded-pill
+          shadow
+          d-flex
+          align-items-center
+          justify-content-center
+        "
+        data-bs-toggle="modal"
+        data-bs-target="#form-modal"
+      >
+        <i class="mdi mdi-plus"></i>
+      </b>
+
       <div class="row justify-content-center">
         <div class="col-6">
           <h2 class="text-center text-primary p-3 align-center">
@@ -26,6 +44,10 @@
         </div>
       </div>
     </div>
+    <Modal>
+      <template #modal-title>New Project</template>
+      <template #modal-body><CreateProjectForm /></template>
+    </Modal>
   </div>
 </template>
 
@@ -60,5 +82,14 @@ export default {
       object-position: center;
     }
   }
+}
+.create-btn {
+  font-size: 20px;
+  height: 60px;
+  width: 60px;
+  z-index: 100;
+  position: fixed;
+  top: 12vh;
+  left: 5vh;
 }
 </style>

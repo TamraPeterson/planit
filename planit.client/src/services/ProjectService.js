@@ -17,6 +17,13 @@ class ProjectService {
     AppState.project = res.data
 
   }
+
+  async create(projectData) {
+    const res = await api.projects('api/projects', projectData)
+    logger.log('creating project', res.data)
+    AppState.projects.push(res.data)
+    return res.data
+  }
 }
 
 export const projectService = new ProjectService()
