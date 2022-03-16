@@ -8,11 +8,21 @@
     <div class="col-2 d-flex flex-row justify-content-between">
       <i
         class="mdi mdi-note selectable"
-        data-bs-toggle="modal"
-        data-bs-target="#form-modal"
+        data-bs-toggle="rightoffcanvas"
+        data-bs-target="#rightoffcanvas"
       ></i>
-      <i class="mdi mdi-delete selectable"></i>
+      <i
+        class="mdi mdi-delete selectable"
+        title="Notes"
+        data-bs-toggle="rightoffcanvas"
+        data-bs-target="#rightoffcanvas"
+      ></i>
     </div>
+    <RightOffCanvas id="notescanvas">
+      <template #rightoffcanvas-header>Notes</template>
+      <template #rightoffcanvas-body>Whats up bruh</template>
+    </RightOffCanvas>
+
     <Modal>
       <template #modal-title>New Project</template>
       <template #modal-body><CreateProjectForm /></template>
@@ -30,8 +40,10 @@ export default {
       type: Object,
       required: true,
     },
+
   },
-  setup() {
+
+  setup(props) {
     return {
     }
   }

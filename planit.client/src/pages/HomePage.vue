@@ -20,7 +20,7 @@
           justify-content-center
         "
         data-bs-toggle="modal"
-        data-bs-target="#form-modal"
+        data-bs-target="#project-modal"
       >
         <i class="mdi mdi-plus"></i>
       </b>
@@ -44,7 +44,7 @@
         </div>
       </div>
     </div>
-    <Modal>
+    <Modal id="project-modal">
       <template #modal-title>New Project</template>
       <template #modal-body><CreateProjectForm /></template>
     </Modal>

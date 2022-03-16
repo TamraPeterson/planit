@@ -1,16 +1,32 @@
 <template>
   <div class="text-primary">
     <div class="row">
-      <div class="col-10">
+      <div class="col-8">
         <h5>
           {{ sprint.name }}
         </h5>
       </div>
-      <div class="col-4"><p>Total Weight:</p></div>
+      <div class="col-4">
+        <h5><i class="mdi mdi-weight-lifter p-2"></i></h5>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-4 text-center"></div>
+      </div>
     </div>
-    <div class="list-group" v-for="t in tasks" :key="t.id">
+    <div class="list-group text-center" v-for="t in tasks" :key="t.id">
       <Task :task="t" />
     </div>
+    <button
+      class="btn btn-success"
+      data-bs-toggle="modal"
+      :data-bs-target="`#task-modal-${sprint.id}`"
+    >
+      +
+    </button>
+    <Modal :id="`task-modal-${sprint.id}`">
+      <template #modal-title>Add task to: {{ sprint.name }}</template>
+      <template #modal-body><CreateTaskForm :sprint="sprint" /></template>
+    </Modal>
   </div>
 </template>
 
@@ -26,6 +42,7 @@ export default {
     },
   },
   setup(props) {
+
     return {
       tasks: computed(() => AppState.tasks.filter(t => t.sprintId == props.sprint.id)),
       sprints: computed(() => AppState.sprints)

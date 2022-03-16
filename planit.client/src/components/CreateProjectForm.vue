@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <form>
+    <form @submit.prevent="createProject">
       <div class="mb-3">
         <label for="title" class="form-label">Project Name:</label>
         <input
@@ -28,6 +28,12 @@
 
 
 <script>
+import { reactive } from "@vue/reactivity";
+import { projectService } from "../services/ProjectService"
+import { logger } from "../utils/Logger";
+import Pop from "../utils/Pop";
+import { Modal } from "bootstrap";
+
 export default {
   setup() {
     const state = reactive({
@@ -37,10 +43,10 @@ export default {
       state,
       async createProject() {
         try {
-          await projectsService.create(state.editable);
+          await projectService.create(state.editable);
           state.editable = {};
           Modal.getOrCreateInstance(
-            document.getElementById("form-modal")
+            document.getElementById("project-modal")
           ).hide();
         } catch (error) {
           logger.error(error);
