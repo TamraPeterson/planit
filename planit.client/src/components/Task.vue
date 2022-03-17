@@ -13,9 +13,9 @@
       ></i>
       <i class="mdi mdi-delete selectable" title="Notes"></i>
     </div>
-    <RightOffCanvas :id="'notes-canvas-' + task.id">
-      <template #rightoffcanvas-header>{{ task.name }} Notes</template>
-      <template #rightoffcanvas-body>Whats up bruh</template>
+    <RightOffCanvas :task="task" :id="'notes-canvas-' + task.id">
+      <template #offcanvas-header></template>
+      <template #offcanvas-body></template>
     </RightOffCanvas>
 
     <Modal>
@@ -35,7 +35,10 @@ export default {
       type: Object,
       required: true,
     },
-
+    // note: {
+    //   type: Object,
+    //   required: true
+    // }
   },
 
   setup(props) {

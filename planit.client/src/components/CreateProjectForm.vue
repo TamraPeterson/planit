@@ -33,9 +33,11 @@ import { projectService } from "../services/ProjectService"
 import { logger } from "../utils/Logger";
 import Pop from "../utils/Pop";
 import { Modal } from "bootstrap";
+import { useRouter } from "vue-router";
 
 export default {
   setup() {
+    const router = useRouter()
     const state = reactive({
       editable: {}
     })
@@ -43,11 +45,12 @@ export default {
       state,
       async createProject() {
         try {
-          await projectService.create(state.editable);
+          const newProject = await projectService.create(state.editable);
           state.editable = {};
           Modal.getOrCreateInstance(
             document.getElementById("project-modal")
           ).hide();
+          router.push({ name: 'Project', params: { id: newProject.id } })
         } catch (error) {
           logger.error(error);
           Pop.toast(error.message, "error");

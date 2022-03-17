@@ -1,13 +1,22 @@
 <template>
   <div class="text-primary">
-    <div class="row">
+    <div class="row p-3">
       <div class="col-8">
         <h5>
           {{ sprint.name }}
         </h5>
       </div>
-      <div class="col-4">
-        <h5><i class="mdi mdi-weight-lifter p-2"></i></h5>
+      <div class="col-3">
+        <h5><i class="mdi mdi-weight-lifter p-2"></i>W</h5>
+      </div>
+      <div class="col-1">
+        <h5>
+          <i
+            class="mdi mdi-delete selectable p-2"
+            title="delete-sprint"
+            @click="deleteSprint()"
+          ></i>
+        </h5>
       </div>
       <div class="row justify-content-center">
         <div class="col-4 text-center"></div>
@@ -34,6 +43,7 @@
 <script>
 import { computed } from "@vue/reactivity"
 import { AppState } from "../AppState"
+import { sprintsService } from "../services/SprintsService"
 export default {
   props: {
     sprint: {
@@ -42,10 +52,11 @@ export default {
     },
   },
   setup(props) {
-
     return {
       tasks: computed(() => AppState.tasks.filter(t => t.sprintId == props.sprint.id)),
-      sprints: computed(() => AppState.sprints)
+      async deleteSprint() {
+        await sprintsService.deleteSprint(props.sprint)
+      }
     }
   }
 }

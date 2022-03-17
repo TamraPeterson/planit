@@ -1,6 +1,8 @@
 import { AppState } from "../AppState"
 import { logger } from "../utils/Logger"
 import { api } from "./AxiosService"
+import Pop from "../utils/Pop"
+
 
 
 
@@ -23,6 +25,17 @@ class ProjectService {
     logger.log('creating project', res.data)
     AppState.projects.push(res.data)
     return res.data
+  }
+
+  async deleteProject(id) {
+    try {
+      if (await Pop.confirm("Are you sure you want to delete this project?", "warning", "yes"))
+        await api.delete('api/projects/' + id)
+      AppState.projects = AppState.projects.filter(p => p.id === id)
+      this.getAllProjects()
+    } catch (error) {
+      logger.log('deleted')
+    }
   }
 }
 
