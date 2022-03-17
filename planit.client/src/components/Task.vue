@@ -8,18 +8,13 @@
     <div class="col-2 d-flex flex-row justify-content-between">
       <i
         class="mdi mdi-note selectable"
-        data-bs-toggle="rightoffcanvas"
-        data-bs-target="#rightoffcanvas"
+        data-bs-toggle="offcanvas"
+        :data-bs-target="'#notes-canvas-' + task.id"
       ></i>
-      <i
-        class="mdi mdi-delete selectable"
-        title="Notes"
-        data-bs-toggle="rightoffcanvas"
-        data-bs-target="#rightoffcanvas"
-      ></i>
+      <i class="mdi mdi-delete selectable" title="Notes"></i>
     </div>
-    <RightOffCanvas id="notescanvas">
-      <template #rightoffcanvas-header>Notes</template>
+    <RightOffCanvas :id="'notes-canvas-' + task.id">
+      <template #rightoffcanvas-header>{{ task.name }} Notes</template>
       <template #rightoffcanvas-body>Whats up bruh</template>
     </RightOffCanvas>
 
@@ -45,6 +40,7 @@ export default {
 
   setup(props) {
     return {
+      // filter notes for task
     }
   }
 }
