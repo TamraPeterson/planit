@@ -20,7 +20,13 @@
 
     <div class="row justify-content-center p-5">
       <div class="col-md-8 shadow text-primary">
-        <h3 class="text-center p-2">{{ project.name }}</h3>
+        <h3 class="text-center p-2">
+          {{ project.name }}
+          <i
+            class="mdi mdi-delete selectable p-2"
+            @click="deleteProject(project.id)"
+          ></i>
+        </h3>
         <p class="text-center">{{ project.description }}</p>
       </div>
       <div class="row justify-content-center">
@@ -42,8 +48,8 @@
         </div>
       </div>
     </div>
-    <OffCanvas :id="'task' + task.id">
-      <template #offcanvas-header>Add a Sprint</template>
+    <OffCanvas>
+      <template #offcanvas-header>View Your Projects</template>
       <template #offcanvas-body>Whats up bruh</template>
     </OffCanvas>
 
@@ -58,7 +64,7 @@
 <script>
 import { computed } from "@vue/reactivity"
 import { AppState } from "../AppState"
-import { useRoute } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 import { onMounted } from "@vue/runtime-core"
 import { logger } from "../utils/Logger"
 import Pop from "../utils/Pop"
@@ -68,14 +74,11 @@ import { tasksService } from "../services/TasksService"
 
 
 export default {
-  props: {
-    project: {
-      type: Object,
-      required: true,
-    },
-  },
+
   setup() {
     const route = useRoute();
+    const router = useRouter()
+    // FIXME why doesn't onmounted work? WatchEffect!
     onMounted(async () => {
       try {
         if (route.name == "Project") {
@@ -91,7 +94,12 @@ export default {
     return {
       project: computed(() => AppState.project),
       sprints: computed(() => AppState.sprints),
-      tasks: computed(() => AppState.tasks)
+      tasks: computed(() => AppState.tasks),
+      async deleteProject(id) {
+        logger.log("deleting from deleter", id)
+        await projectService.deleteProject(id);
+        router.push({ name: 'Home' })
+      }
 
     }
   }
