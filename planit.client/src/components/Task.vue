@@ -1,9 +1,14 @@
 <template>
   <div class="row">
     <div class="col-7">
-      <input class="form-check-input me-3" type="checkbox" value="" />
+      <input
+        class="form-check-input me-3"
+        type="checkbox"
+        :checked="task.isComplete"
+        value=""
+        @click="completeTask()"
+      />
       {{ task.name }}
-      <i class="mdi mdi-pencil selectable" @click="updateTask"></i>
     </div>
     <div class="col-3">Difficulty: {{ task.weight }}</div>
     <div class="col-2 d-flex flex-row justify-content-between">
@@ -49,8 +54,18 @@ export default {
         await tasksService.deleteTask(props.task)
       },
 
-      async updateTask() {
-        await tasksService.updateTask(props.task.id, props.task.sprintId)
+      // async completeTask() {
+      //   let task = AppState.tasks.find(t => t.id == props.task.id)
+      //   task.isComplete != task.isComplete
+
+      // } 
+      // try {
+      //     tasksService.completeTask(props.task.id)
+      //   } catch (error) {
+      //     console.error(error)
+      //   }
+      completeTask() {
+        tasksService.completeTask(props.task)
       }
     }
   }

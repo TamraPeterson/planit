@@ -10,7 +10,7 @@
           type="text"
           placeholder="name"
           class="form-control"
-          v-model="account.name"
+          v-model="editable.name"
         />
       </div>
       <div class="">
@@ -22,21 +22,24 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, reactive, ref, watchEffect } from 'vue'
 import { AppState } from '../AppState'
 import { accountService } from "../services/AccountService"
 import { logger } from "../utils/Logger"
 export default {
   name: 'Account',
   setup() {
-
+    const editable = ref({});
+    watchEffect(() => {
+      editable.value = AppState.account;
+    });
 
     return {
-
+      editable,
       account: computed(() => AppState.account),
       async editProfile() {
         logger.log('edit proifle')
-        await accountService.editProfile(account.name)
+        await accountService.editProfile(editable.value)
       }
     }
   },

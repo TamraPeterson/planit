@@ -22,6 +22,8 @@ export class AccountController extends BaseController {
 
   async updateAccount(req, res, next) {
     try {
+      req.body.id = req.params.id
+      req.body.creatorId = req.userInfo.id
       const account = await accountService.updateAccount(req.userInfo, req.body)
       return res.send(account)
     } catch (error) {

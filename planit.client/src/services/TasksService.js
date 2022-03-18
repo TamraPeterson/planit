@@ -28,8 +28,22 @@ class TasksService {
     logger.log('assignTask', res.data)
     const index = AppState.tasks.findIndex(t => t.id == task.id)
     AppState.tasks.splice(index, 1, res.data)
-    // TODO SPLICE
+
   }
+
+  async completeTask(taskData) {
+    let task = await AppState.tasks.find(t => t.id === taskData.id)
+    task.isComplete = !task.isComplete
+    logger.log('completed dask', task.isComplete);
+    await api.put('api/projects/' + task.projectid + '/tasks/' + task.id, taskData)
+    AppState.tasks = AppState.tasks
+    this.getTasks(taskData.projectId)
+  }
+  // async completeTask(taskData) 
+  //   let task = AppState.tasks.find(t => t.id == taskData.id)
+  //   task.isComplete = !task.isComplete
+  //   this.getTasks(task.projectId)
+  // }
 }
 
 export const tasksService = new TasksService()
