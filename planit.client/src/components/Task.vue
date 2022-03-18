@@ -18,6 +18,7 @@
         :data-bs-target="'#notes-canvas-' + task.id"
       ></i>
       <i
+        v-if="account.id == task.creatorId"
         class="mdi mdi-delete selectable"
         @click="deleteTask"
         title="Notes"
@@ -49,7 +50,7 @@ export default {
   },
   setup(props) {
     return {
-
+      account: computed(() => AppState.account),
       async deleteTask() {
         await tasksService.deleteTask(props.task)
       },

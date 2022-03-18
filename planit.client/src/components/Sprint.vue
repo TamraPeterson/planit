@@ -7,11 +7,15 @@
         </h5>
       </div>
       <div class="col-3">
-        <h5><i class="mdi mdi-weight-lifter p-2"></i>{{ totalWeight }}</h5>
+        <h5>
+          <i title="weight" class="mdi mdi-weight-lifter p-2"></i
+          >{{ totalWeight }}
+        </h5>
       </div>
       <div class="col-1">
         <h5>
           <i
+            v-if="account.id == sprint.creatorId"
             class="mdi mdi-delete selectable p-2"
             title="delete-sprint"
             @click="deleteSprint()"
@@ -26,6 +30,7 @@
       <Task :task="t" />
     </div>
     <button
+      title="add"
       class="btn btn-success"
       data-bs-toggle="modal"
       :data-bs-target="`#task-modal-${sprint.id}`"
@@ -53,6 +58,7 @@ export default {
   },
   setup(props) {
     return {
+      account: computed(() => AppState.account),
       tasks: computed(() => AppState.tasks.filter(t => t.sprintId == props.sprint.id)),
       totalWeight: computed(() => {
 

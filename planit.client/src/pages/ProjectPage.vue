@@ -23,7 +23,9 @@
         <h3 class="text-center p-2">
           {{ project.name }}
           <i
+            v-if="account.id == project.creatorId"
             class="mdi mdi-delete selectable p-2"
+            title="delete"
             @click="deleteProject(project.id)"
           ></i>
         </h3>
@@ -91,6 +93,7 @@ export default {
       };
     })
     return {
+      account: computed(() => AppState.account),
       project: computed(() => AppState.project),
       sprints: computed(() => AppState.sprints),
       tasks: computed(() => AppState.tasks),
