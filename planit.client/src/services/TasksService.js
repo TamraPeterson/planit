@@ -1,5 +1,6 @@
 import { AppState } from "../AppState"
 import { logger } from "../utils/Logger"
+import Pop from "../utils/Pop"
 import { api } from "./AxiosService"
 
 class TasksService {
@@ -13,6 +14,21 @@ class TasksService {
     logger.log('creating task', res.data)
     AppState.tasks.push(res.data)
     return res.data
+  }
+  async deleteTask(task) {
+    if (await Pop.confirm("are you sure?")) {
+      await api.delete('api/projects/' + task.projectId + '/tasks/' + task.id)
+      AppState.tasks = AppState.tasks.filter(t => t.id != task.id)
+      this.getTasks(task.projectId)
+    }
+  }
+
+  async updateTask(task) {
+    const res = await api.put('api/projects/' + task.sprintId + '/tasks/' + task.id, task)
+    logger.log('assignTask', res.data)
+    const index = AppState.tasks.findIndex(t => t.id == task.id)
+    AppState.tasks.splice(index, 1, res.data)
+    // TODO SPLICE
   }
 }
 

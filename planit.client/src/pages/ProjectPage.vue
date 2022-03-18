@@ -65,7 +65,7 @@
 import { computed } from "@vue/reactivity"
 import { AppState } from "../AppState"
 import { useRoute, useRouter } from "vue-router"
-import { onMounted } from "@vue/runtime-core"
+import { onMounted, watchEffect } from "@vue/runtime-core"
 import { logger } from "../utils/Logger"
 import Pop from "../utils/Pop"
 import { projectService } from "../services/ProjectService"
@@ -78,8 +78,7 @@ export default {
   setup() {
     const route = useRoute();
     const router = useRouter()
-    // FIXME why doesn't onmounted work? WatchEffect!
-    onMounted(async () => {
+    watchEffect(async () => {
       try {
         if (route.name == "Project") {
           await projectService.getProject(route.params.id)

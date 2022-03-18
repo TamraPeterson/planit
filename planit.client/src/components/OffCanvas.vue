@@ -15,16 +15,29 @@
           aria-label="Close"
         ></button>
       </div>
-      <div class="offcanvas-body">Bruv</div>
+      <div class="offcanvas-body">
+        <h6 v-for="p in projects" :key="p.id">
+          <Project :project="p" />
+        </h6>
+      </div>
     </div>
   </div>
 </template>
 
 
 <script>
+import { computed } from "@vue/reactivity"
+import { AppState } from "../AppState"
+import { router } from "../router"
 export default {
   setup() {
-    return {}
+    return {
+      projects: computed(() => AppState.projects),
+      goTo() {
+        router.push({ name: "Project", params: { id: props.project.id } })
+      }
+
+    }
   }
 }
 </script>

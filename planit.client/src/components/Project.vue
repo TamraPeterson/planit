@@ -13,6 +13,7 @@ import { AppState } from "../AppState"
 import { router } from "../router"
 import { projectService } from "../services/ProjectService"
 import { logger } from "../utils/Logger"
+import { Offcanvas } from "bootstrap"
 export default {
   props: {
     project: {
@@ -24,10 +25,12 @@ export default {
     return {
       goTo() {
         router.push({ name: "Project", params: { id: props.project.id } })
+        Offcanvas.getOrCreateInstance(document.getElementById('offcanvas')).hide()
       },
       deleteProject(id) {
         logger.log("deleting from deleter", id)
         projectService.deleteProject(id);
+
       }
     }
   }

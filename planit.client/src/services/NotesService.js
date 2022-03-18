@@ -17,7 +17,13 @@ class NotesService {
     logger.log('get notes', res.data)
     AppState.notes = res.data
   }
-
+  async deleteNote(note) {
+    if (await Pop.confirm("are you sure?")) {
+      await api.delete('api/projects/' + note.projectId + '/notes/' + note.id)
+      AppState.notes = AppState.notes.filter(n => n.id != note.id)
+      this.getNotes(note.projectId)
+    }
+  }
 
 }
 

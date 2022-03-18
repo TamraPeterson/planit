@@ -7,7 +7,7 @@
         </h5>
       </div>
       <div class="col-3">
-        <h5><i class="mdi mdi-weight-lifter p-2"></i>W</h5>
+        <h5><i class="mdi mdi-weight-lifter p-2"></i>{{ totalWeight }}</h5>
       </div>
       <div class="col-1">
         <h5>
@@ -54,6 +54,15 @@ export default {
   setup(props) {
     return {
       tasks: computed(() => AppState.tasks.filter(t => t.sprintId == props.sprint.id)),
+      totalWeight: computed(() => {
+
+        let total = 0
+
+        AppState.tasks.filter(t => t.sprintId == props.sprint.id).forEach(t => total += t.weight)
+
+        return total
+
+      }),
       async deleteSprint() {
         await sprintsService.deleteSprint(props.sprint)
       }

@@ -12,8 +12,16 @@
       data-bs-dismiss="offcanvas"
       aria-label="Close"
     ></button>
-    <div class="offcanvas-header">
-      <h5 id="rightoffcanvasRightLabel">Notes for {{}}</h5>
+    <div>
+      <h5>Move to a new Sprint</h5>
+      <select v-model="state.editable.sprintId" @change="moveTask">
+        <option v-for="s in sprints" :key="s.id" :value="s.id">
+          {{ s.name }}
+        </option>
+      </select>
+    </div>
+    <div class="offcanvas-header p-3">
+      <h5 id="rightoffcanvasRightLabel " class="p-3">Notes for {{}}</h5>
     </div>
     <div class="offcanvas-body">
       What is up create a note
@@ -49,26 +57,29 @@ import { AppState } from "../AppState";
 import { logger } from "../utils/Logger";
 import Pop from "../utils/Pop";
 import { notesService } from "../services/NotesService";
-import { onMounted } from "@vue/runtime-core";
+import { onMounted, watchEffect } from "@vue/runtime-core";
+import { tasksService } from "../services/TasksService";
 
 export default {
-  // props: {
-  //   // task: {
-  //   //   type: Object,
-  //   //   required: true,
-  //   // },
-  //   // note: {
-  //   //   type: Object,
-  //   //   required: true
-  //   // }
-  // },
+  props: {
+    task: {
+      type: Object,
+      required: true,
+    }
+    // note: {
+    //   type: Object,
+    //   required: true
+    // }
+  },
   setup(props) {
     const route = useRoute();
-    onMounted(async () => {
+    watchEffect(async () => {
       try {
         if (route.name == "Project") {
           await notesService.getNotes(route.params.id)
+
         }
+        state.editable = { ...props.task }
       } catch (error) {
         logger.log(error)
         Pop.toast(error.message, 'error')
@@ -83,11 +94,21 @@ export default {
       state,
       tasks: computed(() => AppState.tasks),
       notes: computed(() => AppState.notes),
+      sprints: computed(() => AppState.sprints),
+
 
       async createNote() {
         try {
           await notesService.createNote(state.editable, route.params.id);
           logger.log('note creation')
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message, 'error')
+        }
+      },
+      async moveTask() {
+        try {
+          await tasksService.updateTask(state.editable)
         } catch (error) {
           logger.error(error)
           Pop.toast(error.message, 'error')
